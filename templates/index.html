@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Günlük Faturalar</title>
+    <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+    <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <!--Font Awesome (added because you use icons in your prepend/append)-->
+    <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+    <!-- Inline CSS based on choices in "Settings" tab -->
+    <style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+</head>
+<body>
+    <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+    <div class="bootstrap-iso">
+     <div class="container-fluid">
+      <div class="row">
+       <div class="col-md-6 col-sm-6 col-xs-12">
+        <form class="form-horizontal" method="post">
+         <div class="form-group ">
+          <label class="control-label col-sm-2 requiredField" for="date">
+           Tarih:
+           <span class="asteriskField">
+            *
+           </span>
+          </label>
+          <div class="col-sm-10">
+           <div class="input-group">
+            <div class="input-group-addon">
+             <i class="fa fa-calendar">
+             </i>
+            </div>
+            <input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="text"/>
+           </div>
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="col-sm-10 col-sm-offset-2">
+           <button class="btn btn-primary " name="submit" type="submit">
+            Göster
+           </button>
+          </div>
+         </div>
+        </form>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="container">
+        <br/>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tr>
+                    <th>Tarih</th>
+                    <th>Cari</th>
+                    <th class="text-right">Tutar</th>
+                </tr>
+                {% for row in result %}
+                <tr>
+                    <td>{{ row[4].strftime('%d.%m.%Y') }}</td>
+                    <td><a href="detay/{{ row[0] }}">{{ row[9] }}</a></td>
+                    <td class="text-right">{{ "{:,.2f}".format(row[14]) }} TL</td>
+                </tr>
+                {% endfor %}
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><h4>Toplam:</h4></td>
+                        <td class="text-right"><h4>{{ "{:,.2f}".format(toplam) }} TL</h4></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Extra JavaScript/CSS added manually in "Settings" tab -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/locales/bootstrap-datepicker.tr.min.js" charset="UTF-8"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+<script>
+	$(document).ready(function(){
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+
+		date_input.datepicker({
+		    language: 'tr',
+			format: 'mm/dd/yyyy',
+			container: container,
+			todayHighlight: true,
+			autoclose: true,
+		})
+	})
+</script>
+
+
+</body>
+</html>
